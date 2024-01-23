@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import zod from 'zod'
 import { User } from '../db'
 import { JWT_SECRET } from '../config'
+import { AuthRequest, authMiddleWare } from '../middlewares'
 
 const userRouter = Router()
 
@@ -15,6 +16,7 @@ const signupBody = zod.object({
 
 userRouter.post('/signup', async (req, res) => {
   const success = signupBody.safeParse(req.body)
+
   if (!success) {
     res.status(411).json({
       message: 'Invalid input',
@@ -54,6 +56,7 @@ const signinBody = zod.object({
 
 userRouter.post('/signin', async (req, res) => {
   const success = signinBody.safeParse(req.body)
+
   if (!success) {
     res.status(411).json({
       message: 'Error while logging in',
@@ -75,7 +78,7 @@ userRouter.post('/signin', async (req, res) => {
 
   const token = jwt.sign(
     {
-      username: userExists.username,
+      userId: userExists._id,
     },
     JWT_SECRET
   )
