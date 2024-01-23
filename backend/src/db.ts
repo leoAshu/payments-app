@@ -1,17 +1,15 @@
-import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import { DB_URL } from './config'
 
-dotenv.config()
-
-if (process.env.DB_URL) {
-  mongoose.connect(process.env.DB_URL)
+if (DB_URL) {
+  mongoose.connect(DB_URL)
 } else {
   console.log('DB URL does not exist')
 }
 
 interface User {
   username: string
-  fistName: string
+  firstName: string
   lastName: string
   password: string
 }
@@ -31,7 +29,7 @@ const UserSchema = new mongoose.Schema<User>({
     required: true,
     minLength: 6,
   },
-  fistName: {
+  firstName: {
     type: String,
     required: true,
     trim: true,
