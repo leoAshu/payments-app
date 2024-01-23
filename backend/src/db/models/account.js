@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
-const AccountSchema = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -13,6 +13,6 @@ const AccountSchema = new mongoose.Schema({
   },
 })
 
-const Account = mongoose.model('Account', AccountSchema)
+const Account = mongoose.model('Account', accountSchema)
 
-export default Account
+module.exports = Account

@@ -1,17 +1,18 @@
-import { Router } from 'express'
-import jwt from 'jsonwebtoken'
-import zod from 'zod'
-import { User } from '../db'
-import { JWT_SECRET } from '../config'
-import { AuthRequest, authMiddleWare } from '../middlewares'
+const express = require('express')
+const zod = require('zod')
+const jwt = require('jsonwebtoken')
 
-const userRouter = Router()
+const { Account, User } = require('../db')
+const { JWT_SECRET } = require('../config')
+const { authMiddleWare } = require('../middlewares')
+
+const userRouter = express.Router()
 
 const signupBody = zod.object({
   username: zod.string().email(),
-  password: zod.string(),
   firstName: zod.string(),
   lastName: zod.string(),
+  password: zod.string(),
 })
 
 userRouter.post('/signup', async (req, res) => {
@@ -19,7 +20,7 @@ userRouter.post('/signup', async (req, res) => {
 
   if (!success) {
     res.status(411).json({
-      message: 'Invalid input',
+      message: 'Invalid inputs',
     })
     return
   }
@@ -35,10 +36,16 @@ userRouter.post('/signup', async (req, res) => {
     return
   }
 
-  const user = await User.create(req.body)
+  const newUser = await User.create(req.body)
+
+  await Account.create({
+    userId: newUser._id,
+    balance: 1 + Math.random() * 100000,
+  })
+
   const token = jwt.sign(
     {
-      userId: user._id,
+      userId: newUser._id,
     },
     JWT_SECRET
   )
@@ -93,8 +100,7 @@ const updateBody = zod.object({
   lastName: zod.string().optional(),
   password: zod.string().optional(),
 })
-
-userRouter.put('/', authMiddleWare, async (req: AuthRequest, res) => {
+userRouter.put('/', authMiddleWare, async (req, res) => {
   const success = updateBody.safeParse(req.body)
 
   if (!success) {
@@ -144,4 +150,4 @@ userRouter.get('/bulk', authMiddleWare, async (req, res) => {
   })
 })
 
-export default userRouter
+module.exports = userRouter

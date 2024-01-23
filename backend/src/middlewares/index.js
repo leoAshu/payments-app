@@ -1,12 +1,8 @@
-import { Request, Response, NextFunction } from 'express'
-import jwt, { JwtPayload } from 'jsonwebtoken'
-import { JWT_SECRET } from '../config'
+const jwt = require('jsonwebtoken')
 
-interface AuthRequest extends Request {
-  userId?: string
-}
+const { JWT_SECRET } = require('../config')
 
-const authMiddleWare = (req: AuthRequest, res: Response, next: NextFunction) => {
+const authMiddleWare = (req, res, next) => {
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -19,7 +15,7 @@ const authMiddleWare = (req: AuthRequest, res: Response, next: NextFunction) => 
   const token = authHeader.split(' ')[1]
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload
+    const decoded = jwt.verify(token, JWT_SECRET)
 
     if (decoded.userId) {
       req.userId = decoded.userId
@@ -33,4 +29,4 @@ const authMiddleWare = (req: AuthRequest, res: Response, next: NextFunction) => 
   }
 }
 
-export { authMiddleWare, AuthRequest }
+module.exports = { authMiddleWare }
