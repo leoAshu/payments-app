@@ -1,20 +1,6 @@
 import mongoose from 'mongoose'
-import { DB_URL } from './config'
 
-if (DB_URL) {
-  mongoose.connect(DB_URL)
-} else {
-  console.log('DB URL does not exist')
-}
-
-interface User {
-  username: string
-  firstName: string
-  lastName: string
-  password: string
-}
-
-const UserSchema = new mongoose.Schema<User>({
+const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -45,4 +31,4 @@ const UserSchema = new mongoose.Schema<User>({
 
 const User = mongoose.model('User', UserSchema)
 
-export { User }
+export default User
