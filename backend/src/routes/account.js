@@ -1,5 +1,6 @@
 const express = require('express')
 const zod = require('zod')
+const mongoose = require('mongoose')
 
 const { authMiddleWare } = require('../middlewares')
 const { Account } = require('../db')
@@ -32,6 +33,7 @@ accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
     res.json(400).json({
       message: 'Insufficient balance',
     })
+    return
   }
 
   const receiver = await Account.findOne({
@@ -42,6 +44,7 @@ accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
     res.status(400).json({
       message: 'Invalid account',
     })
+    return
   }
 
   await Account.updateOne({ userId: req.userId }, { $inc: { balance: -req.body.amount } })
