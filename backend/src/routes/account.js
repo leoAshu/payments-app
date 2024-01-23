@@ -28,8 +28,8 @@ accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
     userId: req.userId,
   })
 
-  if (sender.balance < req.body.amount) {
-    res.json(200).json({
+  if (!sender || sender.balance < req.body.amount) {
+    res.json(400).json({
       message: 'Insufficient balance',
     })
   }
@@ -44,11 +44,8 @@ accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
     })
   }
 
-  sender.balance -= req.body.amount
-  receiver.balance += req.body.amount
-
-  await sender.save()
-  await receiver.save()
+  await Account.updateOne({ userId: req.userId }, { $inc: { balance: -req.body.amount } })
+  await Account.updateOne({ userId: req.body.to }, { $inc: { balance: req.body.amount } })
 
   res.status(200).json({
     message: 'Transfer successful',
