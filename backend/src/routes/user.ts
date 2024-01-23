@@ -6,7 +6,7 @@ import { JWT_SECRET } from '../config'
 
 const userRouter = Router()
 
-const signupSchema = zod.object({
+const signupBody = zod.object({
   username: zod.string().email(),
   password: zod.string(),
   firstName: zod.string(),
@@ -14,7 +14,7 @@ const signupSchema = zod.object({
 })
 
 userRouter.post('/signup', async (req, res) => {
-  const success = signupSchema.safeParse(req.body)
+  const success = signupBody.safeParse(req.body)
   if (!success) {
     res.status(411).json({
       message: 'Invalid input',
@@ -47,12 +47,13 @@ userRouter.post('/signup', async (req, res) => {
   })
 })
 
-const signinSchema = zod.object({
+const signinBody = zod.object({
   username: zod.string().email(),
   password: zod.string(),
 })
+
 userRouter.post('/signin', async (req, res) => {
-  const success = signinSchema.safeParse(req.body)
+  const success = signinBody.safeParse(req.body)
   if (!success) {
     res.status(411).json({
       message: 'Error while logging in',
