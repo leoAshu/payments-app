@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc && node dist/",
+    "build": "npx tsc",
+    "dev": "nodemon",
     "format": "npx prettier --write ."
   },
   "keywords": [],
