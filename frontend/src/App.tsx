@@ -1,5 +1,5 @@
 function App() {
-  return <>Payments</>;
+  return <>Payments</>
 }
 
-export default App;
+export default App
