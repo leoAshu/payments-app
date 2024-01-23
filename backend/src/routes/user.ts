@@ -88,4 +88,32 @@ userRouter.post('/signin', async (req, res) => {
   })
 })
 
+const updateBody = zod.object({
+  firstName: zod.string().optional(),
+  lastName: zod.string().optional(),
+  password: zod.string().optional(),
+})
+
+userRouter.put('/', authMiddleWare, async (req: AuthRequest, res) => {
+  const success = updateBody.safeParse(req.body)
+
+  if (!success) {
+    res.status(411).json({
+      message: 'Error while updating information',
+    })
+    return
+  }
+
+  await User.updateOne(
+    {
+      _id: req.userId,
+    },
+    req.body
+  )
+
+  res.status(200).json({
+    message: 'Updated succesfully',
+  })
+})
+
 export default userRouter
