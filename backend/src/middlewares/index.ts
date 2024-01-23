@@ -28,3 +28,5 @@ const authMiddleWare = (req: AuthRequest, res: Response, next: NextFunction) => 
     return
   }
 }
+
+export { authMiddleWare }
