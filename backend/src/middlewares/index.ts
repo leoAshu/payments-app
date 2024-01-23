@@ -10,7 +10,9 @@ const authMiddleWare = (req: AuthRequest, res: Response, next: NextFunction) => 
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(403).json({})
+    res.status(403).json({
+      message: 'Unauthorized',
+    })
     return
   }
 
@@ -24,9 +26,11 @@ const authMiddleWare = (req: AuthRequest, res: Response, next: NextFunction) => 
       next()
     }
   } catch (err) {
-    res.status(403).json({})
+    res.status(403).json({
+      message: 'Unauthorized',
+    })
     return
   }
 }
 
-export { authMiddleWare }
+export { authMiddleWare, AuthRequest }
