@@ -9,7 +9,6 @@ const AccountSchema = new mongoose.Schema({
   },
   balance: {
     type: Number,
-    decimals: Number,
     required: true,
   },
 })
