@@ -25,12 +25,18 @@ accountRouter.get('/balance', authMiddleWare, async (req, res) => {
 })
 
 accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
+  const session = await mongoose.startSession()
+
+  session.startTransaction()
+
   const sender = await Account.findOne({
     userId: req.userId,
-  })
+  }).session(session)
 
   if (!sender || sender.balance < req.body.amount) {
-    res.json(400).json({
+    await session.abortTransaction()
+
+    res.status(400).json({
       message: 'Insufficient balance',
     })
     return
@@ -38,17 +44,21 @@ accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
 
   const receiver = await Account.findOne({
     userId: req.body.to,
-  })
+  }).session(session)
 
   if (!receiver) {
+    await session.abortTransaction()
+
     res.status(400).json({
       message: 'Invalid account',
     })
     return
   }
 
-  await Account.updateOne({ userId: req.userId }, { $inc: { balance: -req.body.amount } })
-  await Account.updateOne({ userId: req.body.to }, { $inc: { balance: req.body.amount } })
+  await Account.updateOne({ userId: req.userId }, { $inc: { balance: -req.body.amount } }).session(session)
+  await Account.updateOne({ userId: req.body.to }, { $inc: { balance: req.body.amount } }).session(session)
+
+  await session.commitTransaction()
 
   res.status(200).json({
     message: 'Transfer successful',
