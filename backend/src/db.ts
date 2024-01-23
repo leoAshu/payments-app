@@ -3,6 +3,12 @@ import mongoose from 'mongoose'
 
 dotenv.config()
 
+if (process.env.DB_URL) {
+  mongoose.connect(process.env.DB_URL)
+} else {
+  console.log('DB URL does not exist')
+}
+
 interface User {
   username: string
   fistName: string
