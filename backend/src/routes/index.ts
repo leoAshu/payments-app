@@ -1,9 +1,9 @@
 import { Router } from 'express'
 
-const mainRouter = Router()
+const rootRouter = Router()
 
-mainRouter.get('/', (req, res) => {
+rootRouter.get('/', (req, res) => {
   res.status(200).json({ message: 'Server is live!' })
 })
 
-export default mainRouter
+export default rootRouter
