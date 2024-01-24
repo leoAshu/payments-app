@@ -63,11 +63,7 @@ const Signup = () => {
       navigate('/')
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log(err.response?.data)
-
         setError(err.response?.data.message)
-      } else {
-        console.log(err)
       }
     }
   }
