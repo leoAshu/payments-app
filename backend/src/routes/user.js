@@ -8,6 +8,18 @@ const { authMiddleWare } = require('../middlewares')
 
 const userRouter = express.Router()
 
+userRouter.get('/', authMiddleWare, async (req, res) => {
+  const user = await User.findById(req.userId)
+
+  res.status(200).json({
+    user: {
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    },
+  })
+})
+
 const signupBody = zod.object({
   username: zod.string().email(),
   firstName: zod.string(),
