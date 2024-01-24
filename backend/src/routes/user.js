@@ -13,6 +13,7 @@ userRouter.get('/', authMiddleWare, async (req, res) => {
 
   res.status(200).json({
     user: {
+      userId: user._id,
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
