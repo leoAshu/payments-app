@@ -1,9 +1,9 @@
 import { useRecoilValueLoadable } from 'recoil'
-import userAtomFamily from '../store/atoms/users'
-import { IUser } from '../store/atoms/user'
+import { IUser } from '../store/atoms'
+import { filteredUsersSelector } from '../store/selectors'
 
 const UsersList = () => {
-  const users = useRecoilValueLoadable(userAtomFamily(''))
+  const users = useRecoilValueLoadable(filteredUsersSelector)
 
   if (users.state === 'loading') {
     return <>Loading...</>

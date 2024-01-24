@@ -1,4 +1,23 @@
+import { ChangeEvent, useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
+import { filterAtom } from '../store/atoms'
+
 const Search = () => {
+  const [debouncedFilter, setDebouncedFilter] = useRecoilState(filterAtom)
+  const [filter, setFilter] = useState(debouncedFilter)
+
+  useEffect(() => {
+    const timeOutId = setTimeout(() => {
+      setDebouncedFilter(filter)
+    }, 500)
+
+    return () => clearTimeout(timeOutId)
+  }, [filter])
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value)
+  }
+
   return (
     <div className="relative">
       <div className="absolute inset-y-0 flex items-center pl-3">
@@ -23,6 +42,8 @@ const Search = () => {
         type="search"
         className="w-full p-3.5 pl-10 text-sm text-gray-900 placeholder:text-gray-500 border border-gray-300 rounded-md bg-gray-50 outline-none focus:border-black"
         placeholder="Search users"
+        value={filter}
+        onChange={onChange}
         required
       />
     </div>
