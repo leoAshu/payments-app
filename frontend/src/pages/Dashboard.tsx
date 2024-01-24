@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil'
+import { useRecoilValueLoadable } from 'recoil'
 import { Header, Search, UsersList } from '../components'
 import { isAuthSelector } from '../store/selectors'
 import { useNavigate } from 'react-router-dom'
@@ -6,10 +6,10 @@ import { useEffect } from 'react'
 
 const Dashboard = () => {
   const navigate = useNavigate()
-  const isAuthenticated = useRecoilValue(isAuthSelector)
+  const isAuthenticated = useRecoilValueLoadable(isAuthSelector)
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated.contents) {
       navigate('/signin')
     }
   }, [isAuthenticated])

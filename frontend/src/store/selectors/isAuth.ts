@@ -1,9 +1,11 @@
 import { selector } from 'recoil'
+import { userAtom } from '../atoms'
 
 const isAuthSelector = selector<boolean>({
   key: 'isUserAuthSelector',
-  get: () => {
-    return false
+  get: ({ get }) => {
+    const user = get(userAtom)
+    return Boolean(user.userId)
   },
 })
 
