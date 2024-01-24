@@ -11,6 +11,13 @@ const userRouter = express.Router()
 userRouter.get('/', authMiddleWare, async (req, res) => {
   const user = await User.findById(req.userId)
 
+  if (user === null) {
+    res.status(400).json({
+      message: 'Account does not exist',
+    })
+    return
+  }
+
   res.status(200).json({
     userId: user._id,
     username: user.username,

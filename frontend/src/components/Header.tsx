@@ -16,7 +16,7 @@ const Header = () => {
   }
 
   return (
-    <header className="shadow-md py-2 px-4 select-none">
+    <header className="sticky top-0 shadow-md py-2 px-4 select-none">
       <div className="md:max-w-4xl xl:max-w-7xl mx-auto flex justify-between items-center">
         <div className="text-lg font-semibold">Payments App</div>
 
