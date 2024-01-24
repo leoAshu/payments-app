@@ -17,7 +17,7 @@ const Dashboard = () => {
   }, [isAuthenticated])
 
   return (
-    <div className="h-screen">
+    <>
       {isAuthenticated.state === 'loading' ? (
         <div className="h-full flex items-center justify-center">Loading...</div>
       ) : (
@@ -46,7 +46,7 @@ const Dashboard = () => {
           </main>
         </>
       )}
-    </div>
+    </>
   )
 }
 
