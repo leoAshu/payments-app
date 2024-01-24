@@ -24,7 +24,21 @@ accountRouter.get('/balance', authMiddleWare, async (req, res) => {
   })
 })
 
+const transferBody = zod.object({
+  to: zod.string(),
+  amount: zod.number(),
+})
+
 accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
+  const success = transferBody.safeParse(req.body)
+
+  if (!success) {
+    res.status(411).json({
+      message: 'Invalid request',
+    })
+    return
+  }
+
   const session = await mongoose.startSession()
 
   session.startTransaction()
