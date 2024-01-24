@@ -6,7 +6,6 @@ interface IUser {
   username: string
   firstName: string
   lastName: string
-  balance: number
 }
 
 const userAtom = atom<IUser>({
@@ -19,7 +18,6 @@ const userAtom = atom<IUser>({
         username: '',
         firstName: '',
         lastName: '',
-        balance: 0,
       }
 
       const token = localStorage.getItem(import.meta.env.VITE_APP_LOCAL_STORAGE_KEY)
@@ -34,17 +32,16 @@ const userAtom = atom<IUser>({
         },
       })
 
-      const getAccountBalanceResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/account/balance`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      // const getAccountBalanceResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/account/balance`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // })
 
       user.userId = getUserDetailsResponse.data.userId
       user.username = getUserDetailsResponse.data.username
       user.firstName = getUserDetailsResponse.data.firstName
       user.lastName = getUserDetailsResponse.data.lastName
-      user.balance = getAccountBalanceResponse.data.balance
 
       return user
     },

@@ -2,13 +2,11 @@ import axios from 'axios'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRecoilValueLoadable, useSetRecoilState } from 'recoil'
-import { userAtom } from '../store/atoms'
+import { balanceAtom, userAtom } from '../store/atoms'
 import { isAuthSelector } from '../store/selectors'
 
 const Signup = () => {
-  const isAuthenticated = useRecoilValueLoadable(isAuthSelector)
   const navigate = useNavigate()
-  const setUser = useSetRecoilState(userAtom)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     firstName: '',
@@ -16,6 +14,9 @@ const Signup = () => {
     username: '',
     password: '',
   })
+  const setUser = useSetRecoilState(userAtom)
+  const setBalance = useSetRecoilState(balanceAtom)
+  const isAuthenticated = useRecoilValueLoadable(isAuthSelector)
 
   useEffect(() => {
     if (isAuthenticated.contents) {
@@ -55,8 +56,9 @@ const Signup = () => {
         username: signUpResponse.data.username,
         firstName: signUpResponse.data.firstName,
         lastName: signUpResponse.data.lastName,
-        balance: getAccountBalanceResponse.data.balance,
       })
+
+      setBalance(getAccountBalanceResponse.data.balance)
 
       localStorage.setItem(import.meta.env.VITE_APP_LOCAL_STORAGE_KEY, token)
 

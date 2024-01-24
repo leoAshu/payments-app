@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import axios from 'axios'
 import { useSetRecoilState } from 'recoil'
-import { userAtom } from '../store/atoms'
+import { balanceAtom } from '../store/atoms'
 
 interface ModalProps {
   isOpen: boolean
@@ -15,8 +15,8 @@ const Modal = ({ isOpen, closeModal, userId, firstName, lastName }: ModalProps) 
   const [error, setError] = useState('')
   const [amount, setAmount] = useState('')
   const [success, setSuccess] = useState('')
-  const setUser = useSetRecoilState(userAtom)
   const [isLoading, setIsLoading] = useState(false)
+  const setBalance = useSetRecoilState(balanceAtom)
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setError('')
@@ -48,14 +48,8 @@ const Modal = ({ isOpen, closeModal, userId, firstName, lastName }: ModalProps) 
         }
       )
 
+      setBalance((prevBalance) => Number(prevBalance) - Number(amount))
       setSuccess(response.data.message)
-      setUser((prevUserData) => {
-        const newUser = {
-          ...prevUserData,
-        }
-        newUser.balance = newUser.balance - Number(amount)
-        return newUser
-      })
       setAmount('')
     } catch (err) {
       if (axios.isAxiosError(err)) {
