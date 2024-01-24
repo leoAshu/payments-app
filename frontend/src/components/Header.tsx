@@ -12,7 +12,6 @@ const Header = () => {
       username: '',
       firstName: '',
       lastName: '',
-      balance: 0,
     })
   }
 
