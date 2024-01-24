@@ -1,10 +1,12 @@
 import axios from 'axios'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilValueLoadable, useSetRecoilState } from 'recoil'
 import { userAtom } from '../store/atoms'
+import { isAuthSelector } from '../store/selectors'
 
 const Signup = () => {
+  const isAuthenticated = useRecoilValueLoadable(isAuthSelector)
   const navigate = useNavigate()
   const setUser = useSetRecoilState(userAtom)
   const [error, setError] = useState('')
@@ -14,6 +16,12 @@ const Signup = () => {
     username: '',
     password: '',
   })
+
+  useEffect(() => {
+    if (isAuthenticated.contents) {
+      navigate('/')
+    }
+  }, [isAuthenticated])
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setError('')
@@ -66,82 +74,86 @@ const Signup = () => {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
-      <div className="bg-white min-w-96 px-5 py-6 flex flex-col shadow-md rounded-lg">
-        <div className="flex flex-col items-center mb-3">
-          <h1 className="text-3xl font-bold">Sign Up</h1>
-          <h3 className="max-w-64 text-center mt-2 font-semibold text-gray-500">
-            Enter your information to create an account
-          </h3>
+      {isAuthenticated.state === 'loading' ? (
+        <div className="h-full flex items-center justify-center">Loading...</div>
+      ) : (
+        <div className="bg-white min-w-96 px-5 py-6 flex flex-col shadow-md rounded-lg">
+          <div className="flex flex-col items-center mb-3">
+            <h1 className="text-3xl font-bold">Sign Up</h1>
+            <h3 className="max-w-64 text-center mt-2 font-semibold text-gray-500">
+              Enter your information to create an account
+            </h3>
+          </div>
+
+          {Boolean(error) && (
+            <div className="bg-gray-50 text-sm pl-2 py-2 border-l-8 border-red-500 flex items-center">{error}</div>
+          )}
+
+          <form onSubmit={signUp}>
+            <div className="mt-3 flex flex-col">
+              <label className="mb-2 text-sm font-semibold">First name</label>
+              <input
+                type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
+                placeholder="John"
+                name="firstName"
+                value={formData.firstName}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+
+            <div className="mt-4 flex flex-col">
+              <label className="mb-2 text-sm font-semibold">Last name</label>
+              <input
+                type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
+                placeholder="Doe"
+                name="lastName"
+                value={formData.lastName}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+
+            <div className="mt-4 flex flex-col">
+              <label className="mb-2 text-sm font-semibold">Email</label>
+              <input
+                type="email"
+                className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
+                placeholder="johndoe@example.com"
+                name="username"
+                value={formData.username}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+
+            <div className="mt-4 flex flex-col">
+              <label className="mb-2 text-sm font-semibold">Password</label>
+              <input
+                type="password"
+                className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
+                name="password"
+                value={formData.password}
+                onChange={onChangeHandler}
+                required
+              />
+            </div>
+
+            <div className="mt-6 flex flex-col">
+              <input type="submit" className="bg-black text-white py-2 rounded-md font-semibold" value="Sign Up" />
+            </div>
+          </form>
+
+          <div className="mt-4 text-center font-semibold">
+            Already have an account?{' '}
+            <Link className="underline" to="/signin">
+              Login
+            </Link>
+          </div>
         </div>
-
-        {Boolean(error) && (
-          <div className="bg-gray-50 text-sm pl-2 py-2 border-l-8 border-red-500 flex items-center">{error}</div>
-        )}
-
-        <form onSubmit={signUp}>
-          <div className="mt-3 flex flex-col">
-            <label className="mb-2 text-sm font-semibold">First name</label>
-            <input
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
-              placeholder="John"
-              name="firstName"
-              value={formData.firstName}
-              onChange={onChangeHandler}
-              required
-            />
-          </div>
-
-          <div className="mt-4 flex flex-col">
-            <label className="mb-2 text-sm font-semibold">Last name</label>
-            <input
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
-              placeholder="Doe"
-              name="lastName"
-              value={formData.lastName}
-              onChange={onChangeHandler}
-              required
-            />
-          </div>
-
-          <div className="mt-4 flex flex-col">
-            <label className="mb-2 text-sm font-semibold">Email</label>
-            <input
-              type="email"
-              className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
-              placeholder="johndoe@example.com"
-              name="username"
-              value={formData.username}
-              onChange={onChangeHandler}
-              required
-            />
-          </div>
-
-          <div className="mt-4 flex flex-col">
-            <label className="mb-2 text-sm font-semibold">Password</label>
-            <input
-              type="password"
-              className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
-              name="password"
-              value={formData.password}
-              onChange={onChangeHandler}
-              required
-            />
-          </div>
-
-          <div className="mt-6 flex flex-col">
-            <input type="submit" className="bg-black text-white py-2 rounded-md font-semibold" value="Sign Up" />
-          </div>
-        </form>
-
-        <div className="mt-4 text-center font-semibold">
-          Already have an account?{' '}
-          <Link className="underline" to="/signin">
-            Login
-          </Link>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
