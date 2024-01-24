@@ -51,4 +51,5 @@ const userAtom = atom<IUser>({
   }),
 })
 
+export type { IUser }
 export default userAtom

@@ -1,28 +1,20 @@
-const users = [
-  {
-    id: '1',
-    firstName: 'User',
-    lastName: '1',
-  },
-  {
-    id: '2',
-    firstName: 'User',
-    lastName: '2',
-  },
-  {
-    id: '3',
-    firstName: 'User',
-    lastName: '3',
-  },
-]
+import { useRecoilValueLoadable } from 'recoil'
+import userAtomFamily from '../store/atoms/users'
+import { IUser } from '../store/atoms/user'
 
 const UsersList = () => {
+  const users = useRecoilValueLoadable(userAtomFamily(''))
+
+  if (users.state === 'loading') {
+    return <>Loading...</>
+  }
+
   return (
     <>
-      {users.map((user) => (
-        <div key={user.id} className="mt-3 py-1.5 flex items-center justify-between">
+      {users.contents.map((user: IUser) => (
+        <div key={user.userId} className="mt-3 py-1.5 flex items-center justify-between">
           <div className="flex items-center">
-            <div className="font-semibold bg-gray-200 w-10 h-10 rounded-full flex justify-center items-center">
+            <div className="font-semibold bg-gray-200 w-10 h-10 rounded-full flex justify-center items-center select-none">
               {user.firstName.charAt(0) + user.lastName.charAt(0)}
             </div>
 
