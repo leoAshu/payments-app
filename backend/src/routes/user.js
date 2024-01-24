@@ -32,7 +32,7 @@ userRouter.post('/signup', async (req, res) => {
   const success = signupBody.safeParse(req.body)
 
   if (!success) {
-    res.status(411).json({
+    res.status(400).json({
       message: 'Invalid inputs',
     })
     return
@@ -43,7 +43,7 @@ userRouter.post('/signup', async (req, res) => {
   })
 
   if (userExists) {
-    res.status(411).json({
+    res.status(400).json({
       message: 'Email already taken',
     })
     return
@@ -78,7 +78,7 @@ userRouter.post('/signin', async (req, res) => {
   const success = signinBody.safeParse(req.body)
 
   if (!success) {
-    res.status(411).json({
+    res.status(400).json({
       message: 'Error while logging in',
     })
     return
@@ -90,7 +90,7 @@ userRouter.post('/signin', async (req, res) => {
   })
 
   if (!userExists) {
-    res.status(411).json({
+    res.status(400).json({
       message: 'Error while logging in',
     })
     return
@@ -117,7 +117,7 @@ userRouter.put('/', authMiddleWare, async (req, res) => {
   const success = updateBody.safeParse(req.body)
 
   if (!success) {
-    res.status(411).json({
+    res.status(400).json({
       message: 'Error while updating information',
     })
     return

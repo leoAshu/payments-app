@@ -6,7 +6,7 @@ const authMiddleWare = (req, res, next) => {
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Unauthorized',
     })
     return
@@ -22,7 +22,7 @@ const authMiddleWare = (req, res, next) => {
       next()
     }
   } catch (err) {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Unauthorized',
     })
     return

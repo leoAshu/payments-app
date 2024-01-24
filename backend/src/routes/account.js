@@ -33,7 +33,7 @@ accountRouter.post('/transfer', authMiddleWare, async (req, res) => {
   const success = transferBody.safeParse(req.body)
 
   if (!success) {
-    res.status(411).json({
+    res.status(400).json({
       message: 'Invalid request',
     })
     return
