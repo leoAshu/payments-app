@@ -1,6 +1,66 @@
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSetRecoilState } from 'recoil'
+import { userAtom } from '../store/atoms'
 
 const Signin = () => {
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const setUser = useSetRecoilState(userAtom)
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  })
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setError('')
+
+    const name = e.target.name
+    const value = e.target.value
+
+    setFormData({ ...formData, [name]: value })
+  }
+
+  const signIn = async (e: FormEvent) => {
+    e.preventDefault()
+
+    try {
+      const signUpResponse = await axios.post(`${import.meta.env.VITE_APP_API_BASE_URL}/user/signin`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const token = await signUpResponse.data.token
+
+      const getUserDetailsResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setUser({
+        userId: getUserDetailsResponse.data.user.userId,
+        username: getUserDetailsResponse.data.user.username,
+        firstName: getUserDetailsResponse.data.user.username,
+        lastName: getUserDetailsResponse.data.user.username,
+      })
+
+      localStorage.setItem(import.meta.env.VITE_APP_LOCAL_STORAGE_KEY, token)
+
+      navigate('/')
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err.response?.data)
+
+        setError(err.response?.data.message)
+      } else {
+        console.log(err)
+      }
+    }
+  }
+
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <div className="bg-white min-w-96 px-5 py-6 flex flex-col shadow-md rounded-lg">
@@ -11,28 +71,40 @@ const Signin = () => {
           </h3>
         </div>
 
-        <div className="mt-3 flex flex-col">
-          <label className="mb-2 text-sm font-semibold">Email</label>
-          <input
-            type="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
-            placeholder="johndoe@example.com"
-            required
-          />
-        </div>
+        {Boolean(error) && (
+          <div className="bg-gray-50 text-sm pl-2 py-2 border-l-8 border-red-500 flex items-center">{error}</div>
+        )}
 
-        <div className="mt-4 flex flex-col">
-          <label className="mb-2 text-sm font-semibold">Password</label>
-          <input
-            type="password"
-            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
-            required
-          />
-        </div>
+        <form onSubmit={signIn}>
+          <div className="mt-3 flex flex-col">
+            <label className="mb-2 text-sm font-semibold">Email</label>
+            <input
+              type="email"
+              className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
+              placeholder="johndoe@example.com"
+              name="username"
+              value={formData.username}
+              onChange={onChangeHandler}
+              required
+            />
+          </div>
 
-        <div className="mt-6 flex flex-col">
-          <button className="bg-black text-white py-2 rounded-md font-semibold">Sign Up</button>
-        </div>
+          <div className="mt-4 flex flex-col">
+            <label className="mb-2 text-sm font-semibold">Password</label>
+            <input
+              type="password"
+              className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
+              name="password"
+              value={formData.password}
+              onChange={onChangeHandler}
+              required
+            />
+          </div>
+
+          <div className="mt-6 flex flex-col">
+            <input type="submit" className="bg-black text-white py-2 rounded-md font-semibold" value="Sign In" />
+          </div>
+        </form>
 
         <div className="mt-4 text-center font-semibold">
           Don't have an account?{' '}
