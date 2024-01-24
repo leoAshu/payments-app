@@ -15,7 +15,7 @@ const Signup = () => {
           <label className="mb-2 text-sm font-semibold">First name</label>
           <input
             type="text"
-            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 text-sm rounded-md px-3 py-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
             placeholder="John"
             required
           />
@@ -25,7 +25,7 @@ const Signup = () => {
           <label className="mb-2 text-sm font-semibold">Last name</label>
           <input
             type="text"
-            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 text-sm rounded-md px-3 py-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
             placeholder="Doe"
             required
           />
@@ -35,7 +35,7 @@ const Signup = () => {
           <label className="mb-2 text-sm font-semibold">Email</label>
           <input
             type="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 text-sm rounded-md px-3 py-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
             placeholder="johndoe@example.com"
             required
           />
@@ -45,7 +45,7 @@ const Signup = () => {
           <label className="mb-2 text-sm font-semibold">Password</label>
           <input
             type="password"
-            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 text-sm rounded-md px-3 py-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
             required
           />
         </div>
