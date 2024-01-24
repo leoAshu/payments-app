@@ -27,12 +27,12 @@ const Dashboard = () => {
           <main className="px-4">
             <div className="md:max-w-4xl xl:max-w-7xl mx-auto">
               <div className="mt-12 text-2xl flex items-center">
-                <div className="font-bold">Balance</div>
+                <div className="font-bold select-none">Balance</div>
                 <div className="font-semibold ml-4">${user.contents.balance}</div>
               </div>
 
               <div className="mt-12">
-                <div className="text-2xl font-bold">Users</div>
+                <div className="text-2xl font-bold select-none">Users</div>
 
                 <div className="mt-6">
                   <Search />
