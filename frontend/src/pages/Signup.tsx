@@ -28,7 +28,7 @@ const Signup = () => {
     e.preventDefault()
 
     try {
-      const signUpResponse = await axios.post('http://127.0.0.1:3000/api/v1/user/signup', formData, {
+      const signUpResponse = await axios.post(`${import.meta.env.VITE_APP_API_BASE_URL}/user/signup`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
