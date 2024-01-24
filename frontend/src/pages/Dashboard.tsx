@@ -1,6 +1,19 @@
+import { useRecoilValue } from 'recoil'
 import { Header, Search, UsersList } from '../components'
+import { isAuthSelector } from '../store/selectors'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const Dashboard = () => {
+  const navigate = useNavigate()
+  const isAuthenticated = useRecoilValue(isAuthSelector)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/signin')
+    }
+  }, [isAuthenticated])
+
   return (
     <div className="h-screen">
       <Header />
