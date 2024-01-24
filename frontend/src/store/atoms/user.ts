@@ -20,13 +20,13 @@ const userAtom = atom<IUser>({
         lastName: '',
       }
 
-      const token = localStorage.getItem('payments-app-token')
+      const token = localStorage.getItem(import.meta.env.VITE_APP_LOCAL_STORAGE_KEY)
 
       if (!token) {
         return user
       }
 
-      const response = await axios.get('localhost:3000/api/v1/user', {
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
