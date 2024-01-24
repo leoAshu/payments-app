@@ -42,11 +42,18 @@ const Signup = () => {
         },
       })
 
+      const getAccountBalanceResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/account/balance`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
       setUser({
-        userId: getUserDetailsResponse.data.user.userId,
-        username: getUserDetailsResponse.data.user.username,
-        firstName: getUserDetailsResponse.data.user.username,
-        lastName: getUserDetailsResponse.data.user.username,
+        userId: getUserDetailsResponse.data.userId,
+        username: getUserDetailsResponse.data.username,
+        firstName: getUserDetailsResponse.data.username,
+        lastName: getUserDetailsResponse.data.username,
+        balance: getAccountBalanceResponse.data.balance,
       })
 
       localStorage.setItem(import.meta.env.VITE_APP_LOCAL_STORAGE_KEY, token)
