@@ -26,13 +26,13 @@ const Signin = () => {
     e.preventDefault()
 
     try {
-      const signUpResponse = await axios.post(`${import.meta.env.VITE_APP_API_BASE_URL}/user/signin`, formData, {
+      const signInResponse = await axios.post(`${import.meta.env.VITE_APP_API_BASE_URL}/user/signin`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
 
-      const token = await signUpResponse.data.token
+      const token = await signInResponse.data.token
 
       const getUserDetailsResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/user`, {
         headers: {
