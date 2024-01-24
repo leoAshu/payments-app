@@ -69,11 +69,11 @@ const Signin = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center">
+    <div className="bg-[#f5f5f5] h-screen flex flex-col justify-center items-center">
       {isAuthenticated.state === 'loading' ? (
         <div className="h-full flex items-center justify-center">Loading...</div>
       ) : (
-        <div className="bg-white min-w-96 px-5 py-6 flex flex-col shadow-md rounded-lg">
+        <div className="bg-white min-w-96 px-5 py-6 flex flex-col shadow-lg rounded-md">
           <div className="flex flex-col items-center mb-3">
             <h1 className="text-3xl font-bold">Sign In</h1>
             <h3 className="max-w-64 text-center mt-2 font-semibold text-gray-500">

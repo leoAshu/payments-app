@@ -21,7 +21,7 @@ const Dashboard = () => {
       {isAuthenticated.state === 'loading' || balance.state === 'loading' ? (
         <div className="h-full flex items-center justify-center">Loading...</div>
       ) : (
-        <div className="bg-white">
+        <>
           <Header />
 
           <main className="px-4">
@@ -44,7 +44,7 @@ const Dashboard = () => {
               </div>
             </div>
           </main>
-        </div>
+        </>
       )}
     </>
   )

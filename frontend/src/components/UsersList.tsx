@@ -28,7 +28,7 @@ const UserCard = ({ userId, firstName, lastName }: UserCardProps) => {
 
         <button
           onClick={() => setIsActive(true)}
-          className="bg-black text-white px-3 py-2 text-sm font-semibold rounded"
+          className="bg-black text-white px-3 py-2 text-sm font-semibold rounded-md"
         >
           Send Money
         </button>
