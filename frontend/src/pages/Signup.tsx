@@ -36,12 +36,6 @@ const Signup = () => {
 
       const token = await signUpResponse.data.token
 
-      const getUserDetailsResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
       const getAccountBalanceResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/account/balance`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,10 +43,10 @@ const Signup = () => {
       })
 
       setUser({
-        userId: getUserDetailsResponse.data.userId,
-        username: getUserDetailsResponse.data.username,
-        firstName: getUserDetailsResponse.data.username,
-        lastName: getUserDetailsResponse.data.username,
+        userId: signUpResponse.data.userId,
+        username: signUpResponse.data.username,
+        firstName: signUpResponse.data.firstName,
+        lastName: signUpResponse.data.lastName,
         balance: getAccountBalanceResponse.data.balance,
       })
 
