@@ -26,23 +26,20 @@ const userAtom = atom<IUser>({
         return user
       }
 
-      const getUserDetailsResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      try {
+        const getUserDetailsResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
-      // const getAccountBalanceResponse = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/account/balance`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // })
-
-      user.userId = getUserDetailsResponse.data.userId
-      user.username = getUserDetailsResponse.data.username
-      user.firstName = getUserDetailsResponse.data.firstName
-      user.lastName = getUserDetailsResponse.data.lastName
-
+        user.userId = getUserDetailsResponse.data.userId
+        user.username = getUserDetailsResponse.data.username
+        user.firstName = getUserDetailsResponse.data.firstName
+        user.lastName = getUserDetailsResponse.data.lastName
+      } catch (err) {
+        localStorage.removeItem(import.meta.env.VITE_APP_LOCAL_STORAGE_KEY)
+      }
       return user
     },
   }),

@@ -11,7 +11,7 @@ const Dashboard = () => {
   const isAuthenticated = useRecoilValueLoadable(isAuthSelector)
 
   useEffect(() => {
-    if (!isAuthenticated.contents) {
+    if (!isAuthenticated.contents || isAuthenticated.state == 'hasError' || balance.state == 'hasError') {
       navigate('/signin')
     }
   }, [isAuthenticated])
