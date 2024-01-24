@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 interface ModalProps {
   isOpen: boolean
   userId: string
@@ -7,6 +9,19 @@ interface ModalProps {
 }
 
 const Modal = ({ isOpen, closeModal, firstName, lastName }: ModalProps) => {
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      closeModal()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress)
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress)
+    }
+  })
+
   return (
     <>
       {isOpen && (
