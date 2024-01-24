@@ -1,6 +1,25 @@
+import { ChangeEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Signup = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+  })
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name
+    const value = e.target.value
+
+    setFormData({ ...formData, [name]: value })
+  }
+
+  const signUp = async () => {
+    console.log(formData)
+  }
+
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <div className="bg-white min-w-96 px-5 py-6 flex flex-col shadow-md rounded-lg">
@@ -17,6 +36,9 @@ const Signup = () => {
             type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
             placeholder="John"
+            name="firstName"
+            value={formData.firstName}
+            onChange={onChangeHandler}
             required
           />
         </div>
@@ -27,6 +49,9 @@ const Signup = () => {
             type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
             placeholder="Doe"
+            name="lastName"
+            value={formData.lastName}
+            onChange={onChangeHandler}
             required
           />
         </div>
@@ -37,6 +62,9 @@ const Signup = () => {
             type="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
             placeholder="johndoe@example.com"
+            name="username"
+            value={formData.username}
+            onChange={onChangeHandler}
             required
           />
         </div>
@@ -46,12 +74,17 @@ const Signup = () => {
           <input
             type="password"
             className="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-500 outline-none focus:border-black text-sm rounded-md px-3 py-2"
+            name="password"
+            value={formData.password}
+            onChange={onChangeHandler}
             required
           />
         </div>
 
         <div className="mt-6 flex flex-col">
-          <button className="bg-black text-white py-2 rounded-md font-semibold">Sign Up</button>
+          <button onClick={signUp} className="bg-black text-white py-2 rounded-md font-semibold">
+            Sign Up
+          </button>
         </div>
 
         <div className="mt-4 text-center font-semibold">
