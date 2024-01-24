@@ -20,7 +20,7 @@ const UsersList = () => {
   return (
     <>
       {users.map((user) => (
-        <div className="mt-3 py-1.5 flex items-center justify-between">
+        <div key={user.id} className="mt-3 py-1.5 flex items-center justify-between">
           <div className="flex items-center">
             <div className="font-semibold bg-gray-200 w-10 h-10 rounded-full flex justify-center items-center">
               {user.firstName.charAt(0) + user.lastName.charAt(0)}
